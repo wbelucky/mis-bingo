@@ -11,8 +11,8 @@ type Props = ContainerProps;
 const Img = styled.img<{ dark: boolean }>`
   width: auto;
   height: auto;
-  max-width: 100%;
-  max-height; 100%;
+  max-width: 40px;
+  max-height; 40px;
   filter: brightness(${({ dark }) => (dark ? "50%" : "100%")});
 `;
 

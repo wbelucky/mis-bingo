@@ -15,7 +15,7 @@ export interface CellStat {
 }
 
 const Component: React.FC<Props> = ({ cellStats }) => (
-  <>
+  <div style={{ height: "1080px" }}>
     <Table unstackable>
       <Table.Body>
         {new Array(5).fill(0).map((_, i) => (
@@ -29,7 +29,7 @@ const Component: React.FC<Props> = ({ cellStats }) => (
         ))}
       </Table.Body>
     </Table>
-  </>
+  </div>
 );
 
 const Container: React.FC<{}> = (props) => {
