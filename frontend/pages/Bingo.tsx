@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import "semantic-ui-css/semantic.min.css";
 import { Table } from "semantic-ui-react";
-import BingoCell from "../components/BingoCell";
+import BingoCell from "../src/components/BingoCell";
 
-type ContainerProps = {};
 type Props = { cellStats: Record<number, CellStat> };
 
 export interface CellStat {

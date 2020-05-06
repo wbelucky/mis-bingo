@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "parcel public/index.html",
-    "build": "parcel build public/index.html --no-source-maps --out-dir build --public-url .",
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
     "format": "eslint --fix 'src/**/*.{ts,tsx}' 'pages/**/*.{ts,tsx}'"
   },
   "keywords": [],
@@ -18,7 +19,6 @@
     "@types/react-dom": "^16.9.6",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
-    "@types/react-router-dom": "^5.1.4",
     "typescript": "^3.8.3",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
@@ -28,9 +28,8 @@
     "prettier": "^2.0.2"
   },
   "dependencies": {
-    "@types/react-router-dom": "^5.1.4",
     "@types/styled-components": "^5.0.1",
-    "parcel": "^1.12.4",
+    "next": "^9.3.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",

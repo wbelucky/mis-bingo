@@ -1,9 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { CellStat } from "../pages/Bingo";
+import { CellStat } from "../../pages/Bingo";
 import "semantic-ui-css/semantic.min.css";
-import { Image } from "semantic-ui-react";
-import { Link } from "react-router-dom";
 
 type ContainerProps = CellStat;
 type Props = ContainerProps;
