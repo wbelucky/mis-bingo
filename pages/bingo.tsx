@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "semantic-ui-css/semantic.min.css";
 import { Table } from "semantic-ui-react";
 import BingoCell from "../src/components/BingoCell";
+import { NextPage } from "next";
 
 type Props = { cellStats: Record<number, CellStat> };
 
@@ -31,7 +32,7 @@ const Component: React.FC<Props> = ({ cellStats }) => (
   </div>
 );
 
-const Container: React.FC<{}> = (props) => {
+const Page: NextPage = (props) => {
   console.log(props);
   const [cellStats, setCellStats] = useState<Record<number, CellStat>>(() =>
     new Array(25).fill(0).map(
@@ -47,4 +48,4 @@ const Container: React.FC<{}> = (props) => {
   return <Component cellStats={cellStats} />;
 };
 
-export default Container;
+export default Page;

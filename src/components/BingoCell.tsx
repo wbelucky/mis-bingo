@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { CellStat } from "../../pages/Bingo";
+import { CellStat } from "../../pages/bingo";
+import Link from "next/link";
 import "semantic-ui-css/semantic.min.css";
 
 type ContainerProps = CellStat;
@@ -20,7 +21,7 @@ const Name = styled.p`
 
 const Component: React.FC<Props> = ({ filled, imageURL, name, id }) => (
   <>
-    <Link to={`/users/${id}`}>
+    <Link href={`/users/${id}`}>
       <Name>{name}</Name>
       <Img src={imageURL} dark={!filled} />
     </Link>
