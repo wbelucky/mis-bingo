@@ -1,7 +1,6 @@
 import React from "react";
 import { CellStat } from "../../pages/bingo";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 type ContainerProps = CellStat;
 type Props = ContainerProps;
