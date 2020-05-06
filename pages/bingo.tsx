@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "semantic-ui-css/semantic.min.css";
 import { Table } from "semantic-ui-react";
 import BingoCell from "../src/components/BingoCell";
 import { NextPage } from "next";
