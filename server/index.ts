@@ -2,6 +2,7 @@
 // 参考 https://qiita.com/ukyoda/items/a043f999132b05b79525
 import express from "express";
 import next from "next";
+import { pool } from "./db";
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -12,6 +13,20 @@ app
   .prepare()
   .then(() => {
     const server = express();
+
+    server.get("/db", async (req, res) => {
+      try {
+        const client = await pool.connect();
+        const result = await client.query("SELECT * FROM test_table");
+        const results = { results: result ? result.rows : null };
+        res.render("pages/db", results);
+        client.release();
+      } catch (err) {
+        console.error(err);
+        res.send("Error " + err);
+      }
+    });
+
     server.get("*", (req, res) => {
       return handle(req, res);
     });
