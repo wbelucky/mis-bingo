@@ -14,13 +14,15 @@ app
   .then(() => {
     const server = express();
 
-    server.get("/db", async (req, res) => {
+    server.get("/api/db", async (req, res) => {
       try {
         const client = await pool.connect();
         const result = await client.query("SELECT * FROM test_table");
-        const results = { results: result ? result.rows : null };
-        console.log("db", results);
+        const test = result?.rows ?? [];
         client.release();
+        res.json({
+          test,
+        });
       } catch (err) {
         console.error(err);
         res.send("Error " + err);
