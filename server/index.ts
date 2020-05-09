@@ -3,6 +3,12 @@
 import express from "express";
 import next from "next";
 import { pool } from "./db";
+import session from "express-session";
+// 1 - importing dependencies
+import passport, { Profile } from "passport";
+import Auth0Strategy, { ExtraVerificationParams } from "passport-auth0";
+import uid from "uid-safe";
+import authRoutes from "./auth-routes";
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -13,6 +19,48 @@ app
   .prepare()
   .then(() => {
     const server = express();
+
+    const sessionConfig = {
+      secret: uid.sync(18),
+      cookie: {
+        maxAge: 86400 * 1000,
+      },
+      resave: false,
+      saveUninitialized: true,
+    };
+    server.use(session(sessionConfig));
+
+    const auth0StrategyOptions: Auth0Strategy.StrategyOption = {
+      domain: process.env.AUTH0_DOMAIN as string,
+      clientID: process.env.AUTH0_CLIENT_ID as string,
+      clientSecret: process.env.Auth0_CLIENT_SECRET as string,
+      callbackURL: process.env.AUTH0_CALLBACK_URL as string,
+    };
+
+    const auth0Strategy = new Auth0Strategy(
+      auth0StrategyOptions,
+      (
+        _accessToken: string,
+        _refreshToken: string,
+        _extraParams: ExtraVerificationParams,
+        profile: Profile,
+        done: (error: any, user?: any, info?: any) => void
+      ) => {
+        return done(null, profile);
+      }
+    );
+    passport.use(auth0Strategy);
+    passport.serializeUser((user, done) => done(null, user));
+    passport.deserializeUser((user, done) => done(null, user));
+
+    server.use(passport.initialize());
+    server.use(passport.session());
+    server.use(authRoutes);
+
+    server.use("/api/private", (req, res, next) => {
+      if (!req.isAuthenticated()) return res.redirect("/login");
+      next();
+    });
 
     server.get("/api/db", async (req, res) => {
       try {
