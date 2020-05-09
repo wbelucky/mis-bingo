@@ -30,11 +30,20 @@ app
     };
     server.use(session(sessionConfig));
 
+    const validateEnv = (envName: string) => {
+      const env = process.env[envName];
+      if (!env) {
+        console.error(`env ${envName} does not exist`);
+        process.exit(1);
+      }
+      return env;
+    };
+
     const auth0StrategyOptions: Auth0Strategy.StrategyOption = {
-      domain: process.env.AUTH0_DOMAIN as string,
-      clientID: process.env.AUTH0_CLIENT_ID as string,
-      clientSecret: process.env.Auth0_CLIENT_SECRET as string,
-      callbackURL: process.env.AUTH0_CALLBACK_URL as string,
+      domain: validateEnv("AUTH0_DOMAIN"),
+      clientID: validateEnv("AUTH0_CLIENT_ID"),
+      clientSecret: validateEnv("AUTH0_CLIENT_SECRET"),
+      callbackURL: validateEnv("AUTH0_CALLBACK_URL"),
     };
 
     const auth0Strategy = new Auth0Strategy(
@@ -59,10 +68,11 @@ app
 
     server.use("/api/private", (req, res, next) => {
       if (!req.isAuthenticated()) return res.redirect("/login");
+      // can use req.user
       next();
     });
 
-    server.get("/api/db", async (req, res) => {
+    server.get("/api/db", async (_req, res) => {
       try {
         const client = await pool.connect();
         const result = await client.query("SELECT * FROM test_table");

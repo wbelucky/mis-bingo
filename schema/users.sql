@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
     generation INTEGER NOT NULL,
     content TEXT NOT NULL,
     slack_id VARCHAR(128),
+    picture TEXT NOT NULL,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 );
