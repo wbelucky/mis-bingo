@@ -9,6 +9,7 @@ import passport, { Profile } from "passport";
 import Auth0Strategy, { ExtraVerificationParams } from "passport-auth0";
 import uid from "uid-safe";
 import authRoutes from "./auth-routes";
+import privateAPIRoutes from "./api/private/handler";
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -66,11 +67,7 @@ app
     server.use(passport.session());
     server.use(authRoutes);
 
-    server.use("/api/private", (req, res, next) => {
-      if (!req.isAuthenticated()) return res.redirect("/login");
-      // can use req.user
-      next();
-    });
+    server.use("/api/private", privateAPIRoutes);
 
     server.get("/api/db", async (_req, res) => {
       try {
