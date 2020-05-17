@@ -1,6 +1,6 @@
-import express from "express";
+import Router from "express-promise-router";
 
-const router = express.Router();
+const router = Router();
 
 router.use((req, res, next) => {
   if (!req.isAuthenticated()) return res.redirect("/login");

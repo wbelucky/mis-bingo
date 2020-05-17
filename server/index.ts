@@ -8,8 +8,10 @@ import session from "express-session";
 import passport, { Profile } from "passport";
 import Auth0Strategy, { ExtraVerificationParams } from "passport-auth0";
 import uid from "uid-safe";
-import authRoutes from "./auth-routes";
-import privateAPIRoutes from "./api/private/handler";
+import authRoutes from "./routes/auth";
+import privateAPIRoutes from "./routes/handler";
+import newPromiseRouter from "express-promise-router";
+import { validateEnv } from "./lib/util";
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -19,7 +21,7 @@ const port = process.env.PORT ?? 3000;
 app
   .prepare()
   .then(() => {
-    const server = express();
+    const router = newPromiseRouter();
 
     const sessionConfig = {
       secret: uid.sync(18),
@@ -29,16 +31,7 @@ app
       resave: false,
       saveUninitialized: true,
     };
-    server.use(session(sessionConfig));
-
-    const validateEnv = (envName: string) => {
-      const env = process.env[envName];
-      if (!env) {
-        console.error(`env ${envName} does not exist`);
-        process.exit(1);
-      }
-      return env;
-    };
+    router.use(session(sessionConfig));
 
     const auth0StrategyOptions: Auth0Strategy.StrategyOption = {
       domain: validateEnv("AUTH0_DOMAIN"),
@@ -63,13 +56,13 @@ app
     passport.serializeUser((user, done) => done(null, user));
     passport.deserializeUser((user, done) => done(null, user));
 
-    server.use(passport.initialize());
-    server.use(passport.session());
-    server.use(authRoutes);
+    router.use(passport.initialize());
+    router.use(passport.session());
+    router.use(authRoutes);
 
-    server.use("/api/private", privateAPIRoutes);
+    router.use("/api/private", privateAPIRoutes);
 
-    server.get("/api/db", async (_req, res) => {
+    router.get("/api/db", async (_req, res) => {
       try {
         const client = await pool.connect();
         const result = await client.query("SELECT * FROM test_table");
@@ -84,10 +77,12 @@ app
       }
     });
 
-    server.get("*", (req, res) => {
+    router.get("*", (req, res) => {
       return handle(req, res);
     });
 
+    const server = express();
+    server.use(router);
     server.listen(port, (err?: any) => {
       if (err) throw err;
       console.log(`> Ready on https://localhost:${port}`);

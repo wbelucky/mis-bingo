@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "ts-node --project tsconfig.server.json server/schema/migration.ts",
     "dev": "ts-node --project tsconfig.server.json server/index.ts",
     "build-next": "next build",
     "build-server": "tsc --project tsconfig.server.json",
@@ -40,6 +41,7 @@
     "@babel/core": "^7.9.6",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-promise-router": "^3.0.3",
     "express-session": "^1.17.1",
     "isomorphic-unfetch": "^3.0.0",
     "next": "^9.3.6",

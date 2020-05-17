@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS apply_keyword;
+
+CREATE TABLE IF NOT EXISTS apply_keyword (
+    uid SERIAL PRIMARY KEY,
+    from_id INTEGER NOT NULL,
+    to_id INTEGER NOT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
