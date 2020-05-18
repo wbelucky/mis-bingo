@@ -1,4 +1,6 @@
 # bingo やること
+アカウント情報を持ってくる必要アリ.
+slackIdとか
 
 auth0認証成功したあとに, slack_idでテーブルを検索, テーブルにそのSlackidがない場合は,
 mis-bingoのアカウントを作るページに飛ばす. (frontendでは, 認証できていないなら, /loginに飛ばす. apiは/private)

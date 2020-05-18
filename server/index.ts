@@ -8,6 +8,7 @@ import session from "express-session";
 import passport, { Profile } from "passport";
 import Auth0Strategy, { ExtraVerificationParams } from "passport-auth0";
 import uid from "uid-safe";
+import helmet from "helmet";
 import authRoutes from "./routes/auth";
 import privateAPIRoutes from "./routes/handler";
 import newPromiseRouter from "express-promise-router";
@@ -23,6 +24,7 @@ app
   .then(() => {
     const router = newPromiseRouter();
 
+    router.use(helmet());
     const sessionConfig = {
       secret: uid.sync(18),
       cookie: {

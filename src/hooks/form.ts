@@ -1,5 +1,4 @@
 import { useState, ChangeEvent, useCallback } from "react";
-import { User } from "../../protcol/user";
 
 export const useTextInput = (initialValue?: string) => {
   const [value, setValue] = useState<string>(initialValue ?? "");
@@ -11,3 +10,5 @@ export const useTextInput = (initialValue?: string) => {
   );
   return { value, handleChange };
 };
+
+export type TextInputComponent = React.FC<ReturnType<typeof useTextInput>>;

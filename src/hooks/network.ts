@@ -7,16 +7,23 @@ const useLoadAndError = () => {
   return { loading, setLoading, error, setError };
 };
 
-export const useFetch = <T extends { message?: string }>(input: RequestInfo, init?: RequestInit | undefined) => {
+/**
+ * ex. cosnt [ submit, { loading, error, success} ] = useFetch("/api/private/signup", { credentials: include; method: "POST"};
+ */
+export const useFetch = <T>(path: string, init?: RequestInit | undefined) => {
+  const input = `${location.protocol}//${location.host}${path}`;
   const { loading, setLoading, error, setError } = useLoadAndError();
   const fetchFunc = useCallback(async () => {
     const res = await fetch(input, init);
-    const body = (await res.json()) as T;
     if (Math.floor(res.status / 100) !== 2) {
-      setError({ message: body.message ?? "Some Error" });
+      const error = (await res.json()) as { message: string };
+      setError({ message: error.message ?? "Some Error" });
+      return error;
     }
+    const body = (await res.json()) as T;
     setLoading(true);
+    return body;
   }, [init, input, setError, setLoading]);
   const success = useMemo(() => !loading && !!error, [error, loading]);
-  return [fetchFunc, { loading, error, success }];
+  return [fetchFunc, { loading, error, success }] as const;
 };

@@ -2,55 +2,18 @@
 
 import "semantic-ui-css/semantic.min.css";
 import React, { useEffect, createContext, useState } from "react";
+import absoluteUrl from "next-absolute-url";
 import { AppProps } from "next/app";
 import { NextPageContext } from "next";
 import { useRouter } from "next/router";
 import Wrapper from "../src/components/Header";
+import { User } from "../protcol/user";
 
-export const loginContext = createContext(false);
+export const userInfoContext = createContext<User | undefined>(undefined);
 
-const App = (props: AppProps) => {
+const App = (props: AppProps & { user: User | undefined }) => {
   const router = useRouter();
-  const [isLogin, setIsLogin] = useState(false);
-  // useEffect(() => {
-  //   // TODO: ここのpathによる分岐をなんとかしたい.
-  //   switch (router.pathname) {
-  //     case "/signup":
-  //       return;
-  //     case "/signup/form":
-  //       return;
-  //     case "/login":
-  //       return;
-  //     case "/callback":
-  //       return;
-  //     case "/verify_email":
-  //       return;
-  //     default: {
-  // let unmounted = false;
-  // if (!isLogin) {
-  //   (async () => {
-  //     const isLoginResult = await checkLoggingIn();
-  //     if (!isLoginResult && !unmounted) {
-  //       await router.push("/login");
-  //     } else {
-  //       setIsLogin(true);
-  //     }
-  //   })().catch((err) => {
-  //     throw err;
-  //   });
-  // }
-  // return () => {
-  //   unmounted = true;
-  // };
-  //     }
-  //   }
-  // }, [isLogin, router]);
-  // useEffect(() => {
-  //   const jssStyles = document.querySelector("#jss-server-side");
-  //   if (jssStyles && jssStyles.parentNode) {
-  //     jssStyles.parentNode.removeChild(jssStyles);
-  //   }
-  // });
+  console.log(props.user);
 
   // const handleLogout = useCallback(async () => {
   //   await logout();
@@ -61,16 +24,31 @@ const App = (props: AppProps) => {
   const { Component, pageProps } = props;
   return (
     <Wrapper>
-      <loginContext.Provider value={isLogin}>
+      <userInfoContext.Provider value={props.user}>
         <Component {...pageProps} />
-      </loginContext.Provider>
+      </userInfoContext.Provider>
     </Wrapper>
   );
 };
 
 App.getInitialProps = async ({ Component, ctx }: { Component: any; ctx: NextPageContext }) => {
-  const pageProps = Component.getInitialProps ? await Component.getInitialProps({ ...ctx }) : {};
-  return { pageProps };
+  const { origin } = absoluteUrl(ctx.req, "localhost:3000");
+  const baseHeaders = {
+    Accept: "application/json, */*",
+  };
+  const headers = ctx.req ? Object.assign({ cookie: ctx.req.headers.cookie }, baseHeaders) : baseHeaders;
+
+  const res = await fetch(`${origin}/api/private/profile`, {
+    headers,
+    credentials: "include",
+    method: "GET",
+  });
+  console.log(res);
+  const isAuthenticated = Math.floor(res.status / 100) === 2;
+  const user = isAuthenticated ? ((await res.json()) as User) : undefined;
+  console.log(user);
+  const pageProps = Component.getInitialProps ? await Component.getInitialProps({ ...ctx, user }) : {};
+  return { pageProps, user };
 };
 
 export default App;
