@@ -21,3 +21,5 @@ export interface UserWithoutAccount {
 }
 
 export type User = UserWithoutAccount | UserWithAccount;
+
+const isUser = (arg: unknown): arg is User => typeof arg === "object" && arg !== null && arg.hoge;

@@ -1,13 +1,14 @@
 // https://github.com/mui-org/material-ui/blob/master/examples/nextjs/pages/_app.js 参照
 
 import "semantic-ui-css/semantic.min.css";
-import React, { useEffect, createContext, useState } from "react";
+import React, { createContext } from "react";
 import absoluteUrl from "next-absolute-url";
 import { AppProps } from "next/app";
 import { NextPageContext } from "next";
 import { useRouter } from "next/router";
 import Wrapper from "../src/components/Header";
 import { User } from "../protcol/user";
+import fetch from "isomorphic-unfetch";
 
 export const userInfoContext = createContext<User | undefined>(undefined);
 

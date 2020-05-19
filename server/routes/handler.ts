@@ -1,5 +1,14 @@
 import Router from "express-promise-router";
-import { UserWithoutAccount } from "../../protcol/user";
+import { UserWithoutAccount, UserWithAccount } from "../../protcol/user";
+import { pool } from "../db";
+import express from "express";
+import { check } from "express-validator";
+
+interface ReqUser {
+  displayName: string;
+  user_id: string;
+  picture: string;
+}
 
 const router = Router();
 
@@ -9,16 +18,32 @@ router.use((req, res, next) => {
   next();
 });
 
-router.post("/signup", (req, res) => {
-  res.send("signup");
-  // TODO:
-});
+router.use(express.urlencoded({ extended: true }));
+router.use(express.json());
 
-interface ReqUser {
-  displayName: string;
-  user_id: string;
-  picture: string;
-}
+router.post("/signup", [check("name").isString()], async (req, res) => {
+  console.log("signup");
+  console.log(req.body);
+
+  // TODO: validate
+  const { name, keyword, hint, twitterId, generation, content } = req.body as Omit<UserWithAccount, "hasAccount">;
+  const { user_id: slackId, picture } = req.user as ReqUser;
+
+  const query = {
+    text:
+      "INSERT INTO users ( name, keyword, hint, twitter_id, generation, content, slack_id, picture) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+    values: [name, keyword, hint, twitterId, generation, content, slackId, picture],
+  };
+
+  try {
+    const dbResult = await pool.query(query);
+    console.log(dbResult);
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: "failed to insert to db" });
+  }
+  res.json({}).end();
+});
 
 router.get("/profile", (req, res) => {
   const { displayName: name, user_id: slackId, picture } = req.user as ReqUser;

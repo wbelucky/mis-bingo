@@ -8,7 +8,7 @@ export const useTextInput = (initialValue?: string) => {
     },
     [setValue]
   );
-  return { value, handleChange };
+  return { value, onChange: handleChange };
 };
 
 export type TextInputComponent = React.FC<ReturnType<typeof useTextInput>>;
