@@ -1,5 +1,5 @@
 import React from "react";
-import { CellStat } from "../../pages/bingo";
+import { CellStat } from "../pages/bingo";
 import Link from "next/link";
 
 type ContainerProps = CellStat;

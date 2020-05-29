@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Table } from "semantic-ui-react";
-import BingoCell from "../src/components/BingoCell";
+import BingoCell from "../components/BingoCell";
 import { NextPage } from "next";
 
 type Props = { cellStats: Record<number, CellStat> };

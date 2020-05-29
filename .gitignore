@@ -1,7 +1,7 @@
 node_modules/
 .vscode/
 .cache/
-.next/
 dist/
 .env
+src/infrastructure/view/.next/
 todo.md

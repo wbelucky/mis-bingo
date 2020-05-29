@@ -1,5 +1,5 @@
 import Router from "express-promise-router";
-import { UserWithoutAccount, UserWithAccount } from "../../domain/user";
+import { UserWithoutAccount, UserWithAccount } from "../domain/user";
 import { pool } from "../db";
 import express from "express";
 import { addUser } from "../models/user";

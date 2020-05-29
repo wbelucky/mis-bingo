@@ -1,5 +1,6 @@
 {
-    "watch": ["server"],
+    "watch": ["src"],
+    "ignore": ["./src/infrastructure/view"],
     "ext": "ts",
-    "exec": "ts-node --project ./tsconfig.server.json ./server/index.ts"
+    "exec": "ts-node --project ./tsconfig.json ./src/index.ts"
 }

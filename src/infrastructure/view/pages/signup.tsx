@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { NextPage, NextPageContext } from "next";
 import { userInfoContext } from "./_app";
-import UserConfigForm from "../src/components/UserConfigForm";
+import UserConfigForm from "../components/UserConfigForm";
 import { useRouter } from "next/router";
 
 const Page: NextPage = () => {

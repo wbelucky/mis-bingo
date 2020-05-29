@@ -6,5 +6,6 @@
     "outDir": "dist",
     "noEmit": false
   },
-  "include": ["server"]
+  "include": ["src"],
+  "exclude": ["./src/infrastructure/view"]
 }

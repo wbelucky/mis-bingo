@@ -6,8 +6,8 @@ import absoluteUrl from "next-absolute-url";
 import { AppProps } from "next/app";
 import { NextPageContext } from "next";
 import { useRouter } from "next/router";
-import Wrapper from "../src/components/Header";
-import { User } from "../domain/user";
+import Wrapper from "../components/Header";
+import { User } from "../../../domain/user";
 import fetch from "isomorphic-unfetch";
 
 export const userInfoContext = createContext<User | undefined>(undefined);

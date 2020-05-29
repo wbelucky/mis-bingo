@@ -15,7 +15,7 @@ import newPromiseRouter from "express-promise-router";
 import { validateEnv } from "./lib/util";
 
 const dev = process.env.NODE_ENV !== "production";
-const app = next({ dev });
+const app = next({ dev, dir: "./src/infrastructure/view" });
 const handle = app.getRequestHandler();
 const port = process.env.PORT ?? 3000;
 
