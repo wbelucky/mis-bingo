@@ -1,6 +1,6 @@
 import React, { useCallback, ChangeEvent } from "react";
 import { Form, Message } from "semantic-ui-react";
-import { User, UserWithAccount } from "../../protcol/user";
+import { User, UserWithAccount } from "../../domain/user";
 import { useTextInput } from "../hooks/form";
 import { useFetch } from "../hooks/network";
 

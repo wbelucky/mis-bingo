@@ -1,4 +1,18 @@
 # bingo やること
+
+
+* clean architectureを採用することにする..?
+
+* domain
+* usecase
+    * ビジネスロジックを書く
+* interface
+    * usecase層に使ってもらうためのDBやAPIなどのインターフェースを提供する
+* infrastructure
+    * インターフェースを実装する`
+    *db, viewなど..?
+*
+
 アカウント情報を持ってくる必要アリ.
 slackIdとか
 
