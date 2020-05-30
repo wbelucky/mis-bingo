@@ -5,6 +5,7 @@ export interface UserWithAccount {
   keyword: string;
   hint: string;
   twitterId: string;
+  // TODO: hauntInfo
   generation: number;
   content: string;
   slackId: string;
@@ -21,5 +22,3 @@ export interface UserWithoutAccount {
 }
 
 export type User = UserWithoutAccount | UserWithAccount;
-
-const isUser = (arg: unknown): arg is User => typeof arg === "object" && arg !== null && arg.hoge;

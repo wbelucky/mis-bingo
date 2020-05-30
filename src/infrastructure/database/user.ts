@@ -1,8 +1,8 @@
-import { UserWithAccount } from "../domain/user";
+import { UserWithAccount } from "../../domain/user";
 import { ReqUser } from "../routes/handler";
-import { pool } from "../db";
+import { pool } from "./db";
 import Express from "express";
-import { Result, ok, err } from "../domain/result";
+import { Result, ok, err } from "../../domain/result";
 
 export const existsSlackId = async (slackId: string): Promise<Result<any, any>> => {
   const query = {

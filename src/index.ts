@@ -2,15 +2,15 @@
 // 参考 https://qiita.com/ukyoda/items/a043f999132b05b79525
 import express from "express";
 import next from "next";
-import { pool } from "./db";
+import { pool } from "./infrastructure/database/db";
 import session from "express-session";
 // 1 - importing dependencies
 import passport, { Profile } from "passport";
 import Auth0Strategy, { ExtraVerificationParams } from "passport-auth0";
 import uid from "uid-safe";
 import helmet from "helmet";
-import authRoutes from "./routes/auth";
-import privateAPIRoutes from "./routes/handler";
+import authRoutes from "./infrastructure/routes/auth";
+import privateAPIRoutes from "./infrastructure/routes/handler";
 import newPromiseRouter from "express-promise-router";
 import { validateEnv } from "./lib/util";
 

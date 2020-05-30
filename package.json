@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate": "ts-node --project tsconfig.server.json src/schema/migration.ts",
+    "migrate": "ts-node --project tsconfig.json src/schema/migration.ts",
     "dev": "nodemon",
     "build-next": "next build ./src/infrastructure/view",
-    "build-server": "tsc --project tsconfig.server.json",
+    "build-server": "tsc --project tsconfig.json",
     "build": "npm run build-next && npm run build-server",
     "start": "NODE_ENV=production node dist/index.js",
     "format": "eslint --fix 'src/**/*.{ts,tsx}'"

@@ -1,8 +1,8 @@
 import Router from "express-promise-router";
-import { UserWithoutAccount, UserWithAccount } from "../domain/user";
-import { pool } from "../db";
+import { UserWithoutAccount, UserWithAccount } from "../../domain/user";
+import { pool } from "../database/db";
 import express from "express";
-import { addUser } from "../models/user";
+import { addUser } from "../database/user";
 
 export interface ReqUser {
   displayName: string;
