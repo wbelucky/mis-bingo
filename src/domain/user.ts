@@ -23,3 +23,7 @@ export interface UserWithoutAccount {
 }
 
 export type User = UserWithoutAccount | UserWithAccount;
+
+export type UserValidator = { [P in keyof Partial<UserWithAccount>]: (arg: unknown) => arg is UserWithAccount[P] };
+
+export const UserValidator;
