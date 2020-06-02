@@ -1,7 +1,7 @@
 import Router from "express-promise-router";
 import { UserWithoutAccount } from "../../domain/user";
 import express from "express";
-import { UserController, ReqUser } from "../../interface/controllers/user_controller";
+import { UserController } from "../../interface/controllers/user_controller";
 import { PgHandler } from "../database/db";
 import { Context } from "../context";
 

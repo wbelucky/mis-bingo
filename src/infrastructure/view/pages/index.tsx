@@ -1,13 +1,11 @@
 import React from "react";
 import { NextPage } from "next";
-import fetch from "isomorphic-unfetch";
-import absoluteUrl from "next-absolute-url";
 
 // interface Props {
 //   test: { id: number; name: string }[];
 // }
 
-const Page: NextPage<{}> = (props) => {
+const Page: NextPage<{}> = () => {
   return <>Hello, MISW BINGO</>;
 };
 

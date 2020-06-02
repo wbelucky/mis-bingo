@@ -15,6 +15,7 @@ export interface UserWithAccount {
 
   createdAt: Date;
 }
+export type UserUniqueProp = "id" | "slackId" | "name";
 export type UserInfoNeeded = Omit<UserWithAccount, "hasAccount" | "id" | "createdAt">;
 
 export interface UserWithoutAccount {
