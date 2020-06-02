@@ -6,12 +6,19 @@
 * domain
 * usecase
     * ビジネスロジックを書く
+    * interactorにてロジックを書く
 * interface
     * usecase層に使ってもらうためのDBやAPIなどのインターフェースを提供する
+    * controller
+        * 入力
+    * presenter
+        * UIとかに入力に対する結果を渡すやつ
+    * gateways
+        * dbを操作するためのレポジトリ
 * infrastructure
     * インターフェースを実装する`
     *db, viewなど..?
-*
+* controller => I <|= usecase => I <|= Presenter
 
 アカウント情報を持ってくる必要アリ.
 slackIdとか

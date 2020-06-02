@@ -1,8 +1,10 @@
 import Router from "express-promise-router";
 import { UserWithoutAccount, UserWithAccount } from "../../domain/user";
-import { pool } from "../database/db";
 import express from "express";
-import { addUser } from "../database/user";
+import { addUser, UserRepository } from "../../interface/user_repository";
+import { UserController } from "../../interface/user_controller";
+import { UserInteractor } from "../../usecase/user_interactor";
+import { PgHandler } from "../database/db";
 
 export interface ReqUser {
   displayName: string;
@@ -11,6 +13,9 @@ export interface ReqUser {
 }
 
 const router = Router();
+const sqlHandler = new PgHandler();
+
+const userController = new UserController(sqlHandler);
 
 router.use((req, res, next) => {
   if (!req.isAuthenticated()) return res.status(401).json({ message: "Unauthorized" }).end();

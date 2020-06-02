@@ -13,6 +13,7 @@ export interface UserWithAccount {
 
   createdAt: Date;
 }
+export type UserInfoNeeded = Omit<UserWithAccount, "hasAccount" | "id" | "createdAt">;
 
 export interface UserWithoutAccount {
   hasAccount: false;
