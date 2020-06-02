@@ -8,22 +8,6 @@ export type ValidationError<T> =
   | string;
 export type ValidationResult<T> = { valid: true; value?: T } | { valid: false; errorType: ValidationError<T> };
 export type Validator<T> = (arg: unknown) => ValidationResult<T>;
-export type Int = number;
-
-export const isNumber: Validator<number> = (arg: unknown) =>
-  typeof arg === "number" ? { valid: true } : { valid: false, errorType: "not_number" };
-
-export const isInteger = (arg: unknown): ValidationResult<Int> =>
-  typeof arg === "number" && Number.isInteger(arg) ? { valid: true } : { valid: false, errorType: "not_integer" };
-
-export const isString = (arg: unknown): ValidationResult<string> =>
-  typeof arg === "string" ? { valid: true } : { valid: false, errorType: "not_string" };
-
-export const isStringMaxLen = (arg: unknown, maxLen: number): ValidationResult<string> =>
-  typeof arg === "string" && arg.length <= maxLen
-    ? { valid: true }
-    : { valid: false, errorType: "not_string_in_max_len" };
-
 export class TypeValidator<T> {
   private result: ValidationResult<T> | null = null;
   constructor(private readonly validator: (arg: unknown) => ValidationResult<T>) {}
@@ -35,6 +19,33 @@ export class TypeValidator<T> {
     return this.result;
   }
 }
+
+export type Int = number;
+
+export const isNumber: Validator<number> = (arg: unknown) =>
+  typeof arg === "number" ? { valid: true } : { valid: false, errorType: "not_number" };
+
+export const isInteger = (arg: unknown): ValidationResult<Int> =>
+  typeof arg === "number" && Number.isInteger(arg) ? { valid: true } : { valid: false, errorType: "not_integer" };
+
+export const isNatural = (arg: unknown): ValidationResult<Int> =>
+  new TypeValidator(isInteger).isOk(arg) && arg >= 0 ? { valid: true } : { valid: false, errorType: "not_natural" };
+
+export const isNaturalMax = (max: number) => (arg: unknown): ValidationResult<Int> =>
+  new TypeValidator(isNatural).isOk(arg) && arg <= max
+    ? { valid: true }
+    : { valid: false, errorType: "not_natural_in_max_errorType" };
+
+export const isString = (arg: unknown): ValidationResult<string> =>
+  typeof arg === "string" ? { valid: true } : { valid: false, errorType: "not_string" };
+
+export const isStringMaxLen = (maxLen: number) => (arg: unknown): ValidationResult<string> =>
+  typeof arg === "string" && arg.length <= maxLen
+    ? { valid: true }
+    : { valid: false, errorType: "not_string_in_max_len" };
+
+export const isBoolean: Validator<boolean> = (arg: unknown) =>
+  typeof arg === "boolean" ? { valid: true } : { valid: false, errorType: "not_boolean" };
 
 // validatorを元に, objがT型かどうか判定する関数を返す.
 export const isObj = <T extends Record<string, any>>(
@@ -91,16 +102,3 @@ export const isObj = <T extends Record<string, any>>(
 //   };
 //   return ret;
 // };
-
-const test = () => {
-  type Hoge = { hoge: { hoge: string; fuga: number }; fuga: string };
-  
-  const v = new TypeValidator<Hoge>(isObj({
-    hoge: isObj({ hoge: isString, fuga: isNumber }),
-    fuga: isString,
-  }));
-  const a = 1 as unknown;
-  if (v.isOk(a)) {
-    a.
-  }
-};
