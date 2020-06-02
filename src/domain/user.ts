@@ -28,9 +28,9 @@ export type User = UserWithoutAccount | UserWithAccount;
 
 export type UserValidator = { [P in keyof Partial<UserWithAccount>]: (arg: unknown) => arg is UserWithAccount[P] };
 
-export const userPropValidators: { [P in keyof Partial<UserWithAccount>]: Validator<UserWithAccount[P]> } = {
+export const userPropValidators: { [P in keyof UserInfoNeeded]: Validator<UserWithAccount[P]> } = {
   // hasAccount: isBoolean,
-  id: isNatural,
+  // id: isNatural,
   name: isStringMaxLen(20),
   keyword: isStringMaxLen(20),
   hint: isStringMaxLen(100),

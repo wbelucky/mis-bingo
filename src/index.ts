@@ -2,7 +2,6 @@
 // 参考 https://qiita.com/ukyoda/items/a043f999132b05b79525
 import express from "express";
 import next from "next";
-import { pool } from "./infrastructure/database/db";
 import session from "express-session";
 // 1 - importing dependencies
 import passport, { Profile } from "passport";
@@ -64,20 +63,20 @@ app
 
     router.use("/api/private", privateAPIRoutes);
 
-    router.get("/api/db", async (_req, res) => {
-      try {
-        const client = await pool.connect();
-        const result = await client.query("SELECT * FROM test_table");
-        const test = result?.rows ?? [];
-        client.release();
-        res.json({
-          test,
-        });
-      } catch (err) {
-        console.error(err);
-        res.send("Error " + err);
-      }
-    });
+    // router.get("/api/db", async (_req, res) => {
+    //   try {
+    //     const client = await pool.connect();
+    //     const result = await client.query("SELECT * FROM test_table");
+    //     const test = result?.rows ?? [];
+    //     client.release();
+    //     res.json({
+    //       test,
+    //     });
+    //   } catch (err) {
+    //     console.error(err);
+    //     res.send("Error " + err);
+    //   }
+    // });
 
     router.get("*", (req, res) => {
       return handle(req, res);

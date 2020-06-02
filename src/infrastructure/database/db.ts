@@ -14,6 +14,9 @@ export class PgHandler implements SqlHandler {
       return ok(res);
     } catch (e) {
       // e.code as number;
+      // e.detail
+      // e.table ... テーブル名
+      // 23505: ユニークなキーがすでに存在
       return err({ type: "unexpected", message: e });
     }
   }

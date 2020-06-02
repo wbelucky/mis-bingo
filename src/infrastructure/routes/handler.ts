@@ -1,16 +1,9 @@
 import Router from "express-promise-router";
-import { UserWithoutAccount, UserWithAccount } from "../../domain/user";
+import { UserWithoutAccount } from "../../domain/user";
 import express from "express";
-import { addUser, UserRepository } from "../../interface/user_repository";
-import { UserController } from "../../interface/user_controller";
-import { UserInteractor } from "../../usecase/user_interactor";
+import { UserController, ReqUser } from "../../interface/controllers/user_controller";
 import { PgHandler } from "../database/db";
-
-export interface ReqUser {
-  displayName: string;
-  user_id: string;
-  picture: string;
-}
+import { Context } from "../context";
 
 const router = Router();
 const sqlHandler = new PgHandler();
@@ -27,15 +20,15 @@ router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
 
 router.post("/signup", async (req, res) => {
-  const r = await addUser(req.body as Omit<UserWithAccount, "hasAccount">, req.user as ReqUser);
-  if (r.isErr()) {
-    return res.status(500).json({ message: r.value }).end();
-  }
-  res.json({}).end();
+  await userController.signup(new Context(req, res));
 });
 
 router.get("/profile", (req, res) => {
-  const { displayName: name, user_id: slackId, picture } = req.user as ReqUser;
+  const { displayName: name, user_id: slackId, picture } = req.user as {
+    displayName: string;
+    user_id: string;
+    picture: string;
+  };
   const ret: UserWithoutAccount = {
     hasAccount: false,
     name,

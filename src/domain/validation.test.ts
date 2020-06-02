@@ -36,7 +36,7 @@ describe("Typescript Validator", () => {
     );
     const a = { hoge: { hoge: "dada", fuga: "baba" }, fuga: "aaa" } as unknown;
     v.isOk(a);
-    const res = v.getResult();
-    expect(res && !res.valid && (res.errorType as any).hoge.fuga).toBe("not_number");
+    const err = v.getError();
+    expect((err as any).hoge.fuga).toBe("not_number");
   });
 });

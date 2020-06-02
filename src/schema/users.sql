@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
     twitter_id VARCHAR(128) NOT NULL,
     generation INTEGER NOT NULL,
     content TEXT NOT NULL,
-    slack_id VARCHAR(128),
+    slack_id VARCHAR(128) NOT NULL UNIQUE,
     picture TEXT NOT NULL,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

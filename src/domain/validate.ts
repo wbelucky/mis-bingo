@@ -15,8 +15,13 @@ export class TypeValidator<T> {
     this.result = this.validator(arg);
     return this.result.valid;
   }
-  public getResult(): ValidationResult<T> | null {
-    return this.result;
+  public getError(): ValidationError<T> | null {
+    if (!this.result) return null;
+    return this.result.valid ? null : this.result.errorType;
+  }
+  public getErrorString(): string | null {
+    const e = this.getError();
+    return e ? JSON.stringify(e) : null;
   }
 }
 
