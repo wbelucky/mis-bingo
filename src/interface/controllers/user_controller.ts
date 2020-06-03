@@ -94,4 +94,30 @@ export class UserController {
     }
     return ctx.sendJSON(500, res.value);
   }
+  public async updateProfile(ctx: Context) {
+    const v = reqValidator;
+    if (!v.isOk(ctx.req)) {
+      const err = v.getError();
+      const errObj = { message: "bad request", detail: err };
+      console.error(errObj);
+      return ctx.sendJSON(400, errObj);
+    }
+    const { name, keyword, hint, twitterId, generation, content } = ctx.req.body;
+    const { user_id: slackId, picture } = ctx.req.user;
+    const u: UserInfoNeeded = {
+      name,
+      keyword,
+      hint,
+      twitterId,
+      generation,
+      content,
+      slackId,
+      picture,
+    };
+    const res = await this.interactor.updateProfile(u);
+    if (res.isOk()) {
+      return ctx.sendJSON(200, {});
+    }
+    return ctx.sendJSON(500, res.value);
+  }
 }

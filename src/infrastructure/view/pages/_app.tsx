@@ -14,7 +14,6 @@ export const userInfoContext = createContext<User | undefined>(undefined);
 
 const App = (props: AppProps & { user: User | undefined }) => {
   const router = useRouter();
-  console.log(props.user);
 
   // const handleLogout = useCallback(async () => {
   //   await logout();
@@ -24,14 +23,15 @@ const App = (props: AppProps & { user: User | undefined }) => {
 
   const { Component, pageProps } = props;
   return (
-    <Wrapper>
-      <userInfoContext.Provider value={props.user}>
+    <userInfoContext.Provider value={props.user}>
+      <Wrapper>
         <Component {...pageProps} />
-      </userInfoContext.Provider>
-    </Wrapper>
+      </Wrapper>
+    </userInfoContext.Provider>
   );
 };
 
+// TODO: konoshori ha browsergawadeyarasetahougayosasou
 App.getInitialProps = async ({ Component, ctx }: { Component: any; ctx: NextPageContext }) => {
   const { origin } = absoluteUrl(ctx.req, "localhost:3000");
   const baseHeaders = {
@@ -44,10 +44,8 @@ App.getInitialProps = async ({ Component, ctx }: { Component: any; ctx: NextPage
     credentials: "include",
     method: "GET",
   });
-  console.log(res);
   const isAuthenticated = Math.floor(res.status / 100) === 2;
   const user = isAuthenticated ? ((await res.json()) as User) : undefined;
-  console.log(user);
   const pageProps = Component.getInitialProps ? await Component.getInitialProps({ ...ctx, user }) : {};
   return { pageProps, user };
 };

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Table } from "semantic-ui-react";
 import BingoCell from "../components/BingoCell";
 import { NextPage } from "next";
+import { userInfoContext } from "./_app";
 
 type Props = { cellStats: Record<number, CellStat> };
 
@@ -32,13 +33,13 @@ const Component: React.FC<Props> = ({ cellStats }) => (
 );
 
 const Page: NextPage = (props) => {
-  console.log(props);
+  const user = useContext(userInfoContext);
   const [cellStats, setCellStats] = useState<Record<number, CellStat>>(() =>
     new Array(25).fill(0).map(
       (_, i): CellStat => ({
         id: i,
-        name: `${i}さん`,
-        imageURL: "https://3.bp.blogspot.com/-KgUzGDeV8r8/VaMOD3z_X-I/AAAAAAAAvh8/YK5LucKKUmo/s800/boy_01.png",
+        name: user?.name ?? "",
+        imageURL: user?.picture ?? "",
         filled: false,
         usedInBingoLine: false,
       })

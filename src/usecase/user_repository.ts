@@ -15,5 +15,6 @@ export type UserRepositoryError = { type: "unexpected" } | DbError | { type: "no
 
 export interface UserRepository {
   insert: (u: UserInfoNeeded) => Promise<Result<void, UserRepositoryError>>;
+  update: (u: UserInfoNeeded) => Promise<Result<void, UserRepositoryError>>;
   fineBySlackId: (slackId: User["slackId"]) => Promise<Result<UserWithAccount, UserRepositoryError>>;
 }

@@ -62,4 +62,18 @@ export class UserRepository implements UserRepositoryUseCase {
     }
     return ok(u);
   }
+  public async update(user: UserInfoNeeded): Promise<Result<void, UserRepositoryError>> {
+    const { name, keyword, hint, twitterId, generation, content, picture, slackId } = user;
+    // TODO: updateはどうやって書くかを調べる.
+    const sql =
+      "UPDATE users SET ( name, keyword, hint, twitter_id, generation, content, picture) = ($1, $2, $3, $4, $5, $6, $7) WHERE slack_id = $8";
+    const values = [name, keyword, hint, twitterId, generation, content, picture, slackId];
+    const res = await this.sqlHandler.query(sql, values);
+    console.log(res);
+    if (res.isErr()) {
+      return err(res.value);
+    }
+    console.log(res.value);
+    return ok(undefined);
+  }
 }

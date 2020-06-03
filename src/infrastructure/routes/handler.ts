@@ -27,24 +27,24 @@ router.get("/profile", async (req, res) => {
 });
 
 // TODO: below, if not have account, return.
-router.post("/profile", (req, res) => {
-  res.send("post profile");
+router.post("/profile", async (req, res) => {
   // TODO: update my bingo card
-});
-
-router.get("/bingo", (req, res) => {
-  res.send("get bingo");
-  // TODO: if not has bingo card, make.
-});
-
-router.post("/bingo", (req, res) => {
-  res.send("post bingo");
-  // TODO:
+  await userController.updateProfile(new Context(req, res));
 });
 
 router.get("/users", (req, res) => {
   res.send("get users");
   // TODO: don't show me and keywords and content for after getting keywords
+});
+
+router.get("/bingo", (req, res) => {
+  res.send("get bingo");
+  // TODO:
+});
+
+router.post("/bingo", (req, res) => {
+  res.send("post bingo");
+  // TODO:
 });
 
 router.post("/challenge", (req, res) => {

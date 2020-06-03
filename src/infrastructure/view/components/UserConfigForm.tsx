@@ -1,24 +1,34 @@
 import React, { useCallback, ChangeEvent } from "react";
-import { Form, Message } from "semantic-ui-react";
-import { User, UserWithAccount } from "../../../domain/user";
+import { Form, Message, Image } from "semantic-ui-react";
+import { UserWithAccount } from "../../../domain/user";
 import { useTextInput } from "../hooks/form";
-import { useFetch } from "../hooks/network";
+import { FrontendError } from "../hooks/network";
 
 type ConfigurableProp = Pick<UserWithAccount, "name" | "keyword" | "hint" | "twitterId" | "content" | "generation">;
 type InputHooks = {
   [P in keyof ConfigurableProp]: { value: string; onChange: (e: ChangeEvent<HTMLInputElement>) => void };
 };
 
-const Component: React.FC<{
-  error?: { message: string } | null;
+type ContainerProps = {
+  user: Partial<Omit<UserWithAccount, "hasAccount">>;
+  onSubmit: (user: UserWithAccount) => void;
+  status: { error: FrontendError | null; loading: boolean; success: boolean };
+};
+type ComponentProps = {
+  error?: FrontendError | null;
   loading?: boolean;
   success?: boolean;
   hooks: InputHooks;
+  picture: string;
   handleSubmit: () => void;
-}> = ({ loading, error, hooks, handleSubmit, success }) => {
+};
+
+const Component: React.FC<ComponentProps> = ({ loading, error, hooks, handleSubmit, success, picture }) => {
   const { name, keyword, hint, twitterId, content, generation } = hooks;
   return (
     <>
+      <Image src={picture} width="80px" />
+      <p>画像はSlackアイコンを変更することで適用できます!</p>
       <Form error={!!error} loading={loading} onSubmit={handleSubmit}>
         <Message error={true} content={error ? error.message : "予期せぬエラーが発生しました"} />
         <Form.Field required={true}>
@@ -31,15 +41,15 @@ const Component: React.FC<{
           <Form.Input label="キーワード" type="text" required={true} {...keyword} />
         </Form.Field>
         <Form.Field required={true}>
-          <Form.Input label="キーワードのヒント" type="text" required={true} {...hint} />
-        </Form.Field>
-        <Form.Field>
-          <Form.Input label="twitter @以下" type="text" {...twitterId} />
+          <Form.Input label="キーワードを得るためのヒント(出没場所/時間等)" type="text" required={true} {...hint} />
         </Form.Field>
         <Form.Field>
           <Form.Input label="自己紹介" type="text" required={true} {...content} />
         </Form.Field>
-        <Form.Button>変更</Form.Button>
+        <Form.Field>
+          <Form.Input label="twitter @以下" type="text" {...twitterId} />
+        </Form.Field>
+        <Form.Button>提出</Form.Button>
       </Form>
       {success && (
         <Message positive>
@@ -51,8 +61,8 @@ const Component: React.FC<{
   );
 };
 
-const Container: React.FC<{ user: Partial<Omit<UserWithAccount, "hasAccount">> }> = ({ user }) => {
-  const { name, keyword, hint, twitterId, generation, content } = user;
+const Container: React.FC<ContainerProps> = ({ user, onSubmit, status }) => {
+  const { name, keyword, hint, twitterId, generation, content, picture } = user;
   const hooks = {
     name: useTextInput(name),
     keyword: useTextInput(keyword),
@@ -73,18 +83,10 @@ const Container: React.FC<{ user: Partial<Omit<UserWithAccount, "hasAccount">> }
 
   console.log(req);
 
-  const [submit, status] = useFetch<string>("/api/private/signup", {
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify(req),
-  });
   const handleSubmit = useCallback(() => {
-    submit();
-  }, [submit]);
-  return <Component {...status} hooks={hooks} handleSubmit={handleSubmit} />;
+    onSubmit(req);
+  }, [onSubmit, req]);
+  return <Component {...status} hooks={hooks} handleSubmit={handleSubmit} picture={picture as string} />;
 };
 
 export default Container;

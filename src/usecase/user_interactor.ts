@@ -14,7 +14,7 @@ export class UserInteractor {
     if (res.isErr()) {
       return err(res.value);
     }
-    return ok(res);
+    return ok(undefined);
   }
   public async getProfile(u: GetProfileArg): Promise<Result<User, any>> {
     const res = await this.userRepository.fineBySlackId(u.slackId);
@@ -33,5 +33,12 @@ export class UserInteractor {
       return err(res.value);
     }
     return ok(res.value);
+  }
+  public async updateProfile(u: UserInfoNeeded): Promise<Result<void, any>> {
+    const res = await this.userRepository.update(u);
+    if (res.isErr()) {
+      return err(res.value);
+    }
+    return ok(undefined);
   }
 }

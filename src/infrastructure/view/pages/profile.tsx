@@ -18,9 +18,9 @@ const Page: NextPage = () => {
     }),
     []
   );
+  const [submit, status] = useFetch<UserWithAccount, {}>("/api/private/profile", config);
   const router = useRouter();
   const user = useContext(userInfoContext);
-  const [submit, status] = useFetch<UserWithAccount, {}>("/api/private/signup", config);
   useEffect(() => {
     if (user) return;
     router.push("/login");
@@ -28,13 +28,5 @@ const Page: NextPage = () => {
   if (!user) return null;
   return <UserConfigForm user={user} onSubmit={submit} status={status} />;
 };
-
-// Page.getInitialProps = async ({ user }: NextPageContext & { user: User | undefined }) => {
-//   if (!user) {
-//     Router.push("/login");
-//     return {};
-//   }
-//   return {};
-// };
 
 export default Page;

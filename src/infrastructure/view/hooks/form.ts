@@ -1,4 +1,5 @@
 import { useState, ChangeEvent, useCallback } from "react";
+import { UserWithAccount } from "../../../domain/user";
 
 export const useTextInput = (initialValue?: string) => {
   const [value, setValue] = useState<string>(initialValue ?? "");
