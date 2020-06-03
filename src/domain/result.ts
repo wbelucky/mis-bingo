@@ -30,7 +30,7 @@ export const ok = <T, E>(value: T): Result<T, E> => {
   return new Ok(value);
 };
 export const err = <T, E>(err: E): Result<T, E> => {
-  return new Ok(err);
+  return new Err(err);
 };
 
 // const isTrue = (b: boolean): Result<number, string> => {

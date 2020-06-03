@@ -1,6 +1,6 @@
 import "../../lib/env";
 import pg from "pg";
-import { SqlHandler } from "../../interface/sql_handler";
+import { SqlHandler, DbResult } from "../../interface/sql_handler";
 import { ok, err, Result } from "../../domain/result";
 import { DbError } from "../../usecase/user_repository";
 
@@ -9,17 +9,19 @@ export class PgHandler implements SqlHandler {
     connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false },
   });
-  public async query(text: string, values: unknown[]): Promise<Result<unknown, DbError>> {
+  public async query(text: string, values: unknown[]): Promise<Result<DbResult, DbError>> {
     try {
       const res = await this.pool.query(text, values);
+      console.log("pg");
+      console.log(res);
       return ok(res);
     } catch (e) {
       // e.code as number;
       // e.detail
       // e.table ... テーブル名
-      const code = e.code as number;
+      const code = e.code as string;
       const detail = e.detail as string;
-      if (code === 23505) {
+      if (code === "23505") {
         // 23505: ユニークなキーがすでに存在
         const res = detail.match(/\((.+)\)=\((.+)\)/);
         if (!res || res.length <= 1) {
