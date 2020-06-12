@@ -4,7 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { userInfoContext } from "../pages/_app";
 
-const Component: React.FC<{}> = ({ children }) => {
+type ComponentProps = {
+  handleLogout: () => void;
+};
+
+const Component: React.FC<ComponentProps> = ({ handleLogout, children }) => {
   const router = useRouter();
   const user = useContext(userInfoContext);
   const onSettingClicked = useCallback(() => {
@@ -44,7 +48,7 @@ const Component: React.FC<{}> = ({ children }) => {
                   <Dropdown.Item icon="setting" text="Settings" onClick={onSettingClicked} />
                   <Dropdown.Item icon="trophy" content="Achievements" />
                   <Dropdown.Divider />
-                  <Dropdown.Item icon="logout" text="Log Out" />
+                  <Dropdown.Item icon="logout" text="Log Out" onClick={handleLogout} />
                 </Dropdown.Menu>
               </Dropdown>
             </Menu.Item>

@@ -5,6 +5,7 @@ import UserConfigForm from "../components/UserConfigForm";
 import { useRouter } from "next/router";
 import { useFetch } from "../hooks/network";
 import { UserWithAccount } from "../../../domain/user";
+import { Header } from "semantic-ui-react";
 
 const Page: NextPage = () => {
   const config = useCallback(
@@ -26,7 +27,12 @@ const Page: NextPage = () => {
     router.push("/login");
   }, [router, user]);
   if (!user) return null;
-  return <UserConfigForm user={user} onSubmit={submit} status={status} />;
+  return (
+    <div>
+      <Header as="h1">Sign Up</Header>
+      <UserConfigForm user={user} onSubmit={submit} status={status} />{" "}
+    </div>
+  );
 };
 
 // Page.getInitialProps = async ({ user }: NextPageContext & { user: User | undefined }) => {

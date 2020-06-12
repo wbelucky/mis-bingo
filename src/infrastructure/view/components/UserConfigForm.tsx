@@ -81,8 +81,6 @@ const Container: React.FC<ContainerProps> = ({ user, onSubmit, status }) => {
     generation: parseInt(hooks.generation.value),
   } as UserWithAccount;
 
-  console.log(req);
-
   const handleSubmit = useCallback(() => {
     onSubmit(req);
   }, [onSubmit, req]);
